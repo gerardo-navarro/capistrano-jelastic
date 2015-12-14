@@ -1,0 +1,92 @@
+namespace :load do
+  task :capistrano_rails_jelastic_defaults do
+
+    set :seeding_enabled, true
+
+    # Default branch is :master
+    # ask :branch, `git rev-parse --abbrev-ref HEAD`.chomp
+    ask :branch, 'master'
+
+    # Default deploy_to directory is /var/www/my_app_name
+    set :deploy_to, '/var/www/webroot'
+
+    # Default value for :scm is :git
+    set :scm, :git
+
+    # Default value for :format is :pretty
+    set :format, :pretty
+
+    # Default value for :log_level is :debug
+    set :log_level, :debug
+
+    set :pty, true
+
+    set :linked_files, fetch(:linked_files, []) | ['config/secrets.yml', 'config/database.yml']
+
+    # Default value for linked_dirs is []
+    set :linked_dirs, fetch(:linked_dirs, []).push('log', 'tmp/pids', 'tmp/cache', 'tmp/sockets', 'vendor/bundle', 'public/system')
+  end
+
+  task :print_config_variables do
+    puts 
+    puts '------- Printing all config variables -------'
+    env.keys.each do |config_variable_key|
+      unless config_variable_key == :branch
+        puts "#{config_variable_key} => #{fetch(config_variable_key).inspect}"
+      end
+    end
+
+    puts
+  end
+end
+
+before 'deploy:starting', 'load:capistrano_rails_jelastic_defaults'
+after 'load:capistrano_rails_jelastic_defaults', 'load:print_config_variables'
+
+namespace :deploy do
+
+    desc 'Creating symlink'
+    task :symlink do
+        on roles(:app) do
+            execute :rm, "-rf /var/www/webroot/ROOT"
+            execute :ln, "-s /var/www/webroot/current /var/www/webroot/ROOT"
+        end
+    end
+
+    desc "reload the database with seed data"
+      task :seed => [:set_rails_env] do
+        on primary fetch(:migration_role) do
+          within release_path do
+            with rails_env: fetch(:rails_env) do
+              execute :rake, "db:seed"
+            end
+          end
+        end
+      end
+
+    #Just restart the app, do not restart the whole webserver!
+    #desc 'Restart Nginx and create symlink'
+    #task :restart do
+    #  on roles(:app) do
+    #    execute :touch, release_path.join('tmp/restart.txt')
+    #  end
+    #end
+    
+    #before :restart, "nginx:reload"
+    #before :restart, :prepare_symlinks_for_capistrano
+
+    desc 'restart passenger'
+    task :restart_passenger do
+      on roles(:web), in: :groups, limit: 3, wait: 10 do
+        within release_path do
+          execute :touch, 'tmp/restart.txt'
+        end
+      end
+    end
+
+    before :restart, :symlink
+    after :restart, :restart_passenger
+ 
+end
+ 
+after 'deploy:publishing', 'deploy:restart'
