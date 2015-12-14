@@ -28,13 +28,9 @@ Gem::Specification.new do |spec|
   spec.require_paths = ["lib"]
 
   spec.add_dependency "bundler", "~> 1.10"
-  # Because rvm is used on jelastic to handle ruby versions
   spec.add_dependency 'capistrano', '~> 3.1'
+  # Because rvm is used on jelastic to handle ruby versions
   spec.add_dependency 'capistrano-rvm'
   spec.add_dependency 'capistrano-rails'
   spec.add_dependency 'capistrano-bundler'
-  spec.add_dependency 'capistrano-nginx'
-
-  # spec.add_development_dependency "rake", "~> 10.0"
-  # spec.add_development_dependency "rspec"
 end
