@@ -19,7 +19,7 @@ And then execute: `bundle install`
 Create `{RAILS_ROOT}/Capfile` file and add the following lines:
 ```ruby
 # This import will load all other necessary scripts, e.g. capistrano/rvm or capistrano/bundler
-# It will also import all rake tasks within the included gems (lib/capistrano/tasks/*.rake)
+# It will also import all capistrano rake tasks within the installed gems (lib/capistrano/tasks/*.rake)
 require 'capistrano/jelastic'
 
 Rake::Task[:production].invoke
