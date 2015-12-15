@@ -1,6 +1,8 @@
 namespace :load do
   task :capistrano_rails_jelastic_defaults do
 
+    lock '3.4.0'
+
     set :seeding_enabled, fetch(:seeding_enabled, true)
 
     # Default branch is :master
