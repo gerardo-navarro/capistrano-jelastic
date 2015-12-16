@@ -19,6 +19,8 @@ Gem::Specification.new do |spec|
   spec.executables   = spec.files.grep(%r{^exe/}) { |f| File.basename(f) }
   spec.require_paths = ["lib"]
 
+  spec.required_ruby_version = '>= 2.0'
+
   spec.add_dependency 'capistrano', '~> 3.1'
   # Because rvm is used on jelastic to handle ruby versions
   spec.add_dependency 'capistrano-rvm'
