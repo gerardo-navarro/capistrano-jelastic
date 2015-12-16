@@ -1,55 +1,10 @@
-namespace :load do
-  task :capistrano_rails_jelastic_defaults do
-
-    lock '3.4.0'
-
-    set :seeding_enabled, fetch(:seeding_enabled, true)
-
-    # Default branch is :master
-    # ask :branch, `git rev-parse --abbrev-ref HEAD`.chomp
-    unless fetch(:branch)
-      ask :branch, 'master'
-    end
-
-    set :deploy_to,       '/var/www/webroot'
-
-    set :scm,             fetch(:scm, :git)
-
-    set :format,          fetch(:format, :pretty)
-
-    set :log_level,       fetch(:log_level, :debug)
-
-    set :pty,             fetch(:pty, true)
-
-    set :linked_files,    fetch(:linked_files, ['config/secrets.yml', 'config/database.yml'])
-
-    # Default value for linked_dirs is []
-    set :linked_dirs,     fetch(:linked_dirs, []).push('log', 'tmp/pids', 'tmp/cache', 'tmp/sockets', 'vendor/bundle', 'public/system')
-  end
-
-  task :print_config_variables do
-    puts 
-    puts '------- Printing all config variables -------'
-    env.keys.each do |config_variable_key|
-      unless config_variable_key == :branch
-        puts "#{config_variable_key} => #{fetch(config_variable_key).inspect}"
-      end
-    end
-
-    puts
-  end
-end
-
-before 'deploy:starting', 'load:capistrano_rails_jelastic_defaults'
-after 'load:capistrano_rails_jelastic_defaults', 'load:print_config_variables'
-
 namespace :deploy do
 
     desc 'Creating symlink'
     task :symlink do
         on roles(:app) do
-            execute :rm, '-rf /var/www/webroot/ROOT'
-            execute :ln, '-s /var/www/webroot/current /var/www/webroot/ROOT'
+            execute :rm, "-rf #{fetch(:deploy_to)}/ROOT"
+            execute :ln, "-s #{fetch(:deploy_to)}/current #{deploy_path}/ROOT"
         end
     end
 

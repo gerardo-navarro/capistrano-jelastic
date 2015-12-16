@@ -23,6 +23,6 @@ Gem::Specification.new do |spec|
   spec.add_dependency 'capistrano', '~> 3.1'
   # Because rvm is used on jelastic to handle ruby versions
   spec.add_dependency 'capistrano-rvm'
-  spec.add_dependency 'capistrano-rails'
   spec.add_dependency 'capistrano-bundler'
+  spec.add_dependency 'capistrano-rails'
 end
