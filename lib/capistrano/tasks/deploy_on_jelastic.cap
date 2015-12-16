@@ -1,6 +1,6 @@
 namespace :deploy do
 
-    desc 'Creating symlink'
+    desc 'Creating symlink to update assets'
     task :symlink do
         on roles(:app) do
             execute :rm, "-rf #{fetch(:deploy_to)}/ROOT"
@@ -8,31 +8,20 @@ namespace :deploy do
         end
     end
 
-    desc "reload the database with seed data"
-      task :seed => [:set_rails_env] do
-        if fetch :seeding_enabled
-          on primary fetch(:migration_role) do
-            within release_path do
-              with rails_env: fetch(:rails_env) do
-                execute :rake, "db:seed"
-              end
+    desc "Reload the database with seed data"
+    task :seed => [:set_rails_env] do
+      if fetch :seeding_enabled
+        on primary fetch(:migration_role) do
+          within release_path do
+            with rails_env: fetch(:rails_env) do
+              execute :rake, "db:seed"
             end
           end
         end
       end
+    end
 
-    #Just restart the app, do not restart the whole webserver!
-    #desc 'Restart Nginx and create symlink'
-    #task :restart do
-    #  on roles(:app) do
-    #    execute :touch, release_path.join('tmp/restart.txt')
-    #  end
-    #end
-    
-    #before :restart, "nginx:reload"
-    #before :restart, :prepare_symlinks_for_capistrano
-
-    desc 'restart passenger'
+    desc 'Restart passenger with normal touch command'
     task :restart_passenger do
       on roles(:web), in: :groups, limit: 3, wait: 10 do
         within release_path do
@@ -41,9 +30,10 @@ namespace :deploy do
       end
     end
 
+    after :migrate, :seed
     before :restart, :symlink
     after :restart, :restart_passenger
+    after :publishing, :restart
  
 end
  
-after 'deploy:publishing', 'deploy:restart'
