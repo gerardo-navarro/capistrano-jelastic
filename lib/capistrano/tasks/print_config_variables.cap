@@ -1,0 +1,17 @@
+# namespace :deploy do
+#   task :print_config_variables do
+#     puts 
+#     puts '------- Printing all config variables -------'
+#     env.keys.each do |config_variable_key|
+#       if is_question?(config_variable_key)
+#         puts "#{config_variable_key.inspect} => Question (awaits user input on next fetch(#{config_variable_key.to_sym}))"
+#       else
+#         puts "#{config_variable_key.inspect} => #{fetch(config_variable_key).inspect}"
+#       end
+#     end
+
+#     puts
+#   end
+# end
+
+# before 'deploy:starting', 'deploy:print_config_variables'

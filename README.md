@@ -73,7 +73,7 @@ set :ssh_options, {
 # To get this working you need to ssh-log into the system and `cd /var/www/webroot/shared/config`. Then create the production files you need, e.g. `/var/www/webroot/shared/config/database.yml` or `/var/www/webroot/shared/config/secrets.yml`
 set :linked_files, fetch(:linked_files, []) | ['config/database.yml', 'config/secrets.yml']
 
-# Feel free to include any config variable in the `config/deploy.rb` or in config/deploy/*.rb to customize your setup. This variables will override the default values defined in `lib/capistrano/tasks/deploy_on_jelastic.cap`. For available Capistrano configuration variables see the documentation page: http://capistranorb.com/documentation/getting-started/configuration/
+# Feel free to include any config variable in the `config/deploy.rb` or in config/deploy/*.rb to customize your setup. This variables will override the default values defined in `lib/capistrano/tasks/capistrano_jelastic_defaults.cap`. For available Capistrano configuration variables see the documentation page: http://capistranorb.com/documentation/getting-started/configuration/
 ```
 
 Finalize the setup on the jelastic machine by:
@@ -82,16 +82,9 @@ Finalize the setup on the jelastic machine by:
 
 Now you can do `bundle exec cap production deploy` and everything should be taken care of ;-D
 
-## Development
-
-After checking out the repo, run `bin/setup` to install dependencies. Then, run `rake spec` to run the tests. You can also run `bin/console` for an interactive prompt that will allow you to experiment.
-
-To install this gem onto your local machine, run `bundle exec rake install`. To release a new version, update the version number in `version.rb`, and then run `bundle exec rake release`, which will create a git tag for the version, push git commits and tags, and push the `.gem` file to [rubygems.org](https://rubygems.org).
-
 ## Contributing
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/[USERNAME]/capistrano-jelastic. This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to the [Contributor Covenant](contributor-covenant.org) code of conduct.
-
+You are more than welcome to constribute to this repository.
 
 ## License
 
