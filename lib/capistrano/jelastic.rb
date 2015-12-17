@@ -13,6 +13,7 @@ require 'capistrano/rails/migrations'
 
 load File.expand_path('../tasks/capistrano_jelastic_defaults.cap', __FILE__)
 load File.expand_path('../tasks/deploy_on_jelastic.cap', __FILE__)
+load File.expand_path('../tasks/install_capistrano_jelastic.rake', __FILE__)
 
 Dir.glob('lib/capistrano/tasks/*.rake').each { |r| import r }
 

@@ -1,0 +1,37 @@
+# Custom Roles Config
+# ==================
+# Defines a role with one or multiple servers. Specify the username and a domain or IP for the server.
+# The of the url is composed of {nodeid}-{uid}@gate.jelastic.{your.hoster}, where `nodeid` is the node ID value of the Apache application server container in your environment and `uid` is the number before @ symbol in your SSH connection string.
+# Be aware the nodeid of the database should be different to the nodeid of the `app` and `web` role
+role :app, '123456-78900@gate.jelastic.hoster.com' <-- change this
+role :web, '123456-78900@gate.jelastic.hoster.com' <-- change this
+role :db,  '123456-78900@gate.jelastic.hoster.com' <-- change this
+
+# Custom Server Config
+# ==================
+# Defines a single server with a list of roles and multiple properties.
+# See http://docs.jelastic.com/ssh-capistrano
+server 'gate.jelastic.hoster.com', user: '123456-78900', roles: %w{web app} <-- change this
+
+# Custom SSH Options
+# ==================
+# You may pass any option but keep in mind that net/ssh understands a
+# limited set of options, consult the Net::SSH documentation.
+# http://net-ssh.github.io/net-ssh/classes/Net/SSH.html#method-c-start
+set :ssh_options, {
+  port: 3022
+  # keys: %w(/home/rlisowski/.ssh/id_rsa),
+  # forward_agent: false,
+  # auth_methods: %w(password)
+}
+
+# Configuration
+# =============
+# Defines the files that need to be linked in order to inject production properties from the folder `/var/www/webroot/shared/config/`
+# To get this working you need to ssh-log into the system and `cd /var/www/webroot/shared/config`. Then create the production files you need, e.g. `/var/www/webroot/shared/config/database.yml` or `/var/www/webroot/shared/config/secrets.yml`
+set :linked_files, fetch(:linked_files, []) | ['config/database.yml', 'config/secrets.yml']
+
+# Feel free to include any config variable in the `config/deploy.rb` or in config/deploy/*.rb to customize your setup. This variables will override the default values defined in:
+# https://github.com/gerardo-navarro/capistrano-jelastic/blob/master/lib/capistrano/tasks/capistrano_jelastic_defaults.cap
+# 
+# For available Capistrano configuration variables see the documentation page: http://capistranorb.com/documentation/getting-started/configuration/

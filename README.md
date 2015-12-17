@@ -8,15 +8,24 @@ Add this line to your application's Gemfile:
 
 ```ruby
 # Use Capistrano for deployment
-group :development do
-  # Capistrano gem and others also included in this gem 
-  gem 'capistrano-jelastic', github: 'gerardo-navarro/capistrano-jelastic'
-end
+gem 'capistrano-jelastic', group: :development
 ```
 
-And then execute: `bundle install`
+Do `bundle install`
 
-Create `{RAILS_ROOT}/Capfile` file and add the following lines:
+Do `bundle exec cap install` and adjust the deployment config variables in the generated files:
+- `config/deploy.rb` - general config variables for thw whole deployment
+- `config/deploy/{production,staging}.rb` - specific config variables for each deployment environment
+
+Finalize the setup on the deployment jelastic machine by:
+- Adding `export RAILS_ENV=production` to `~/.bashrc`
+- Adding `passenger_app_env production;` to `/etc/nginx/app_servers/nginx-passenger.conf`
+
+Now you can do `bundle exec cap production deploy` and everything should be taken care of ;-D
+
+## Generated capistrano deployment files
+
+### `Capfile`
 ```ruby
 # This import will load all other necessary scripts, e.g. capistrano/rvm or capistrano/bundler
 # It will also import all capistrano rake tasks within the installed gems (lib/capistrano/tasks/*.rake)
@@ -25,9 +34,8 @@ require 'capistrano/jelastic'
 Rake::Task[:production].invoke
 ```
 
-Create `{RAILS_ROOT}/config/deploy.rb` to define general config for all deployment environments. Add the following config entries to this file:
+### `config/deploy.rb`
 ```ruby
-
 # Define the name of the application
 set :application, 'some_cool_app_name'
 
@@ -38,7 +46,7 @@ set :application, 'some_cool_app_name'
 set :repo_url, 'https://github.com/gerardo-navarro/capistrano-jelastic'
 ```
 
-Create `{RAILS_ROOT}/config/deploy/production.rb` to define config for a specific deployment environment:
+### `config/deploy/{production,staging}.rb`
 ```ruby
 # Custom Roles Config
 # ==================
@@ -75,12 +83,6 @@ set :linked_files, fetch(:linked_files, []) | ['config/database.yml', 'config/se
 
 # Feel free to include any config variable in the `config/deploy.rb` or in config/deploy/*.rb to customize your setup. This variables will override the default values defined in `lib/capistrano/tasks/capistrano_jelastic_defaults.cap`. For available Capistrano configuration variables see the documentation page: http://capistranorb.com/documentation/getting-started/configuration/
 ```
-
-Finalize the setup on the jelastic machine by:
-- Adding `export RAILS_ENV=production` to `~/.bashrc`
-- Adding `passenger_app_env production;` to `/etc/nginx/app_servers/nginx-passenger.conf`
-
-Now you can do `bundle exec cap production deploy` and everything should be taken care of ;-D
 
 ## Contributing
 

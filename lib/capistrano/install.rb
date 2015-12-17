@@ -1,0 +1,2 @@
+# When capistrano is executed, this file overrides the lib/capistrano/install.rb in the capistrano gem (https://github.com/capistrano/capistrano/blob/master/lib/capistrano/install.rb) and redirects to a custom install rake tasks
+load File.expand_path(File.join(File.dirname(__FILE__),'tasks/install_capistrano_jelastic.rake'))

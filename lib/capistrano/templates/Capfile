@@ -1,0 +1,8 @@
+# This import will load all other necessary scripts, e.g. capistrano/rvm or capistrano/bundler
+# It will also import all capistrano rake tasks within the installed gems (lib/capistrano/tasks/*.rake)
+require 'capistrano/jelastic'
+
+Rake::Task[:production].invoke
+
+# Load custom tasks from `{RAILS_ROOT}/lib/capistrano/tasks` if you have any defined
+Dir.glob('lib/capistrano/tasks/*.rake').each { |r| import r }
