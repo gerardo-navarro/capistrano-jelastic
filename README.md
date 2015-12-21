@@ -18,7 +18,7 @@ Do `bundle exec cap install` and adjust the deployment config variables in the g
 - `config/deploy/{production,staging}.rb` - specific config variables for each deployment environment
 
 Finalize the setup on the deployment jelastic machine by:
-- Adding `export RAILS_ENV=production` to `~/.bashrc`
+- Adding `export RAILS_ENV=production` to `~/.bashrc`, `echo "export RAILS_ENV=production" >> ~/.bashrc`
 - Adding `passenger_app_env production;` to `/etc/nginx/app_servers/nginx-passenger.conf`
 
 Now you can do `bundle exec cap production deploy` and everything should be taken care of ;-D
