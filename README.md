@@ -18,8 +18,11 @@ Do `bundle exec cap install` and adjust the deployment config variables in the g
 - `config/deploy/{production,staging}.rb` - specific config variables for each deployment environment
 
 Finalize the setup on the deployment jelastic machine by:
+- Register the SSH public key of the jelastic nginx server on the specified source code repository. Otherwise, you’ll get a “Permission denied” error. If there is no public SSH key on the jelastic machine, you need to perform `ssh-keygen` and copy & paste `~/.ssh/id_rsa.pub` in your repository.
+-  Define the files that need to be linked in order to inject production properties from the folder `/var/www/webroot/shared/config/`, e.g. `/var/www/webroot/shared/config/database.yml` and `/var/www/webroot/shared/config/secret.yml`
 - Adding `export RAILS_ENV=production` to `~/.bashrc`, `echo "export RAILS_ENV=production" >> ~/.bashrc`
 - Adding `passenger_app_env production;` to `/etc/nginx/app_servers/nginx-passenger.conf`
+- Restart the whole environment – just to be sure ;-D
 
 Now you can do `bundle exec cap production deploy` and everything should be taken care of ;-D
 
