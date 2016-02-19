@@ -40,13 +40,13 @@ Rake::Task[:production].invoke
 ### `config/deploy.rb`
 ```ruby
 # Define the name of the application
-set :application, 'some_cool_app_name'
+set :application, 'some_cool_app_name' <-- change this
 
 # Define url to the VCS repository so that capistrano can initiate a checkout; git is autmatically set as version control system
 # Note: You need to have registered the SSH public key of the jelastic nginx server to the specified source code repository. Otherwise, you’ll get a “Permission denied” error. If there is no public SSH key on the jelastic machine, you need to perform `ssh-keygen` and copy & paste `~/.ssh/id_rsa.pub` in your repository.
 # 
 # You can also use the HTTPS link of the following type: `set :repo_url, "https://example.net/GIT_user_name/repo_name.git"`
-set :repo_url, 'https://github.com/gerardo-navarro/capistrano-jelastic'
+set :repo_url, 'https://github.com/some_cool_repository' <-- change this
 ```
 
 ### `config/deploy/{production,staging}.rb`
