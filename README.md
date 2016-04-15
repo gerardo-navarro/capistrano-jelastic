@@ -23,7 +23,6 @@ Important steps to do to finalize the deployment setup on the jelastic machine b
 -  Define the files that need to be linked in order to inject production properties from the folder `/var/www/webroot/shared/config/`, e.g. `/var/www/webroot/shared/config/database.yml` and `/var/www/webroot/shared/config/secret.yml`
 - Add `export RAILS_ENV=production` to `~/.bashrc`, `echo "export RAILS_ENV=production" >> ~/.bashrc`
 - Add `passenger_app_env production;` to `/etc/nginx/app_servers/nginx-passenger.conf` after the line `passenger_enabled on;`
-- Add `rails_env production;` to `/etc/nginx/app_servers/nginx-passenger.conf`
 - Add `rails_env production;` to `/etc/nginx/ruby.env`
 - Restart the whole environment – just to be sure ;-D
 
